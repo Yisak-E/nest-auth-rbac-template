@@ -132,9 +132,10 @@ export class AuthService {
   }
 
   /**
-   * Validate user by ID (used by JWT strategy)
-   */
-  async validateUserById(id: string): Promise<any> {
+ * Validate user by ID (used by JWT strategy)
+ */
+async validateUserById(id: string): Promise<any> {
+  try {
     const user = await this.userModel.findById(id).select('-password').exec();
     
     if (!user || !user.isActive) {
@@ -147,7 +148,10 @@ export class AuthService {
       roles: user.roles,
       username: user.username,
     };
+  } catch (error) {
+    return null;
   }
+}
 
   /**
    * Generate JWT token and format response
